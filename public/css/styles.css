@@ -53,7 +53,10 @@ nav ul {
   justify-content: space-evenly;
 }
 
-nav ul li {
+nav ul li a {
+  display: inline-block;
+  color: white;
+  text-decoration: none;
   padding: 1rem 0;
 }
 
@@ -143,6 +146,59 @@ nav ul li {
   align-items: center;
 }
 
+#inv-display {
+  display: block;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+#inv-display li {
+  padding: .5rem;
+  margin-bottom: .5rem;
+}
+
+#inv-display li a img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  padding: .5rem;
+}
+
+.namePrice h2 a {
+  color: black;
+  text-decoration: none;
+}
+
+.namePrice h2 a:hover {
+  color: var(--main-color);
+}
+
+.inv-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: .5rem;
+}
+
+.inv-detail img {
+  width: 100%;
+}
+
+.inv-content p {
+  margin: 0;
+  padding: 0;
+  margin-bottom: .5rem;
+}
+
+.inv-content button {
+  padding: .5rem 1rem;
+  font-weight: 700;
+  color: black;
+  background-color: var(--main-color);
+  border: 1.5px solid rgba(0, 0, 0, 0.25);
+}
+
 @media screen and (min-width: 760px) {
   html {
     background-image: url("../images/site/small_check.jpg");
@@ -198,7 +254,7 @@ nav ul li {
     font-size: 1.5rem;
   }
 
-  main {
+  .home-container {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
   }
@@ -216,5 +272,23 @@ nav ul li {
   .upgrades {
     grid-column: 1/2;
     grid-row: 2/3;
+  }
+
+  #inv-display {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+
+  #inv-display li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .inv-detail {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    padding: 2rem;
   }
 }

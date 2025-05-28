@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS public.inventory
 	inv_year character(4) NOT NULL,
 	inv_description text NOT NULL,
 	inv_image character varying NOT NULL,
-    inv_thumbnail character varying NOT NULL,
+  inv_thumbnail character varying NOT NULL,
 	inv_price numeric(9, 0) NOT NULL,
 	inv_miles integer NOT NULL,
 	inv_color character varying NOT NULL,
