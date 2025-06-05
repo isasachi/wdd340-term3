@@ -218,7 +218,10 @@ nav ul li a {
   display: block;
   width: 100%;
   margin-bottom: .5rem;
-  padding: .25rem;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
 }
 
 .form-container form button {
@@ -240,6 +243,58 @@ nav ul li a {
   font-size: .8rem;
   color: gray;
   margin-bottom: 1rem;
+}
+
+.form-container form button:disabled {
+  background-color: silver;
+}
+
+/* Inventory Management Table Styles */
+#inventoryDisplay {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+}
+
+#inventoryDisplay th,
+#inventoryDisplay td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+#inventoryDisplay th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+#inventoryDisplay tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+#inventoryDisplay tr:hover {
+  background-color: #f5f5f5;
+}
+
+#inventoryDisplay a {
+  color: #007bff;
+  text-decoration: none;
+  padding: 4px 8px;
+  border-radius: 3px;
+}
+
+#inventoryDisplay a:hover {
+  background-color: #007bff;
+  color: white;
+}
+
+/* Classification select styling */
+#classificationList {
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin: 10px 0;
 }
 
 @media screen and (min-width: 760px) {

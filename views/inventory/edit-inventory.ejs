@@ -8,7 +8,7 @@
         </ul>
     <% } %>
     <%- messages() %>
-    <form action="/inv/add-inventory" method="post">
+    <form action="/inv/update" method="post" id="updateForm">
         <label for="inv_make">Make</label>
         <input type="text" id="inv_make" name="inv_make" required value="<%= typeof inv_make != 'undefined' ? inv_make : '' %>">
         <label for="inv_model">Model</label>
@@ -28,7 +28,12 @@
         <label for="inv_color">Color</label>
         <input type="text" id="inv_color" name="inv_color" required value="<%= typeof inv_color != 'undefined' ? inv_color : '' %>">
         <label for="classificationList">Select classification</label>
-        <%- classificationList %>
-        <button type="submit">Add Vehicle</button>
+        <%- classificationSelect %>
+        <input type="hidden" name="inv_id"
+        <% if(locals.inv_id) { %> value="<%= locals.inv_id %>"
+        <% } %>>
+        <button type="submit" disabled>Update Vehicle</button>
     </form>
 </div>
+<script src="/js/inv-update.js"></script>
+
