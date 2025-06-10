@@ -1,0 +1,24 @@
+<% if (title) { %>
+  <h1><%= title %></h1>
+<% } else { %>
+  <h1>Vehicle Management</h1>
+<% } %>
+
+<% if (errors) { %>
+        <ul class="notice">
+            <% errors.array().forEach(error => { %>
+                <li><%= error.msg %></li>
+            <% }) %>
+        </ul>
+    <% } %>
+
+<%- messages() %>
+
+<%- classificationSelect %>
+
+<div id="marketplaceDisplay"></div>
+
+<noscript>JavaScript must be enabled to use this page.</noscript>
+
+<script src="/js/marketplace.js"></script>
+<script src="https://kit.fontawesome.com/f63bcfaae7.js" crossorigin="anonymous"></script>

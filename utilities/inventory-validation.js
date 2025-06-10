@@ -144,4 +144,33 @@ validate.checkUpdateData = async (req, res, next) => {
   next()
 }
 
+validate.addPostFeedbackRules = () => {
+  return [
+    body("liked")
+      .isBoolean(),
+
+    body("comment")
+      .trim()
+      .escape()
+      .notEmpty()
+      .withMessage("Please write a comment before submitting.")
+  ]
+}
+
+validate.checkMarketplaceData = async (req, res, next) => {
+   let errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    let nav = await utilities.getNav()
+    const classificationSelect = await utilities.buildClassificationList()
+    res.render("inventory/marketplace", {
+    title: "Marketplace",
+    errors: null,
+    nav,
+    classificationSelect
+  })
+    return
+  }
+  next()
+}
+
 module.exports = validate

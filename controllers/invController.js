@@ -318,4 +318,39 @@ invCont.deleteInventory = async function (req, res, next) {
   }
 }
 
+invCont.getMarketplaceJSON = async (req, res, next) => {
+  const classification_id = parseInt(req.params.classification_id)
+  const invData = await invModel.getMarketplaceByClassificationId(classification_id)
+  console.log("invData: " + invData)
+  if (invData[0].inv_id) {
+    return res.json(invData)
+  } else {
+    next(new Error("No data returned"))
+  }
+}
+
+invCont.buildMarketplace = async function (req, res, next) {
+  const classificationSelect = await utilities.buildClassificationList(null)
+  let nav = await utilities.getNav()
+  res.render("inventory/marketplace", {
+    title: "Marketplace",
+    errors: null,
+    nav,
+    classificationSelect
+  })
+}
+
+invCont.addPostFeedback = async function (req, res, next) {
+  const { liked, comment, inv_id, classification_id } = req.body
+  const result = await invModel.addPostFeedback(liked, comment, inv_id, classification_id)
+  
+  if (result.rowCount) {
+    req.flash("notice", "Your comment has been saved successfully.")
+    res.redirect('/inv/marketplace')
+  } else {
+    req.flash("notice", "Sorry, something went wrong when saving your comment.")
+    res.redirect("/inv/marketplace")
+  }
+}
+
 module.exports = invCont

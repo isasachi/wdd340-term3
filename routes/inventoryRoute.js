@@ -13,8 +13,10 @@ router.get("/add-classification", utilities.checkAccountType, utilities.handleEr
 router.get("/add-inventory", utilities.checkAccountType, utilities.handleErrors(invController.buildAddInventory))
 // Route to get inventory by classification_id as JSON
 router.get("/getInventory/:classification_id", utilities.handleErrors(invController.getInventoryJSON))
+router.get("/getMarketplace/:classification_id", utilities.handleErrors(invController.getMarketplaceJSON))
 router.get("/edit/:inv_id", utilities.checkAccountType, utilities.handleErrors(invController.editInventoryView));
 router.get("/delete/:inv_id", utilities.checkAccountType, utilities.handleErrors(invController.deleteInventoryView));
+router.get("/marketplace", utilities.handleErrors(invController.buildMarketplace))
 router.post(
     "/add-classification", 
     invValidate.addClassificationRules(),
@@ -33,5 +35,10 @@ router.post(
     invValidate.checkUpdateData,
     utilities.handleErrors(invController.updateInventory));
 router.post("/delete", utilities.handleErrors(invController.deleteInventory));
+router.post(
+    "/postFeedback",
+    invValidate.addPostFeedbackRules(),
+    invValidate.checkMarketplaceData,
+    utilities.handleErrors(invController.addPostFeedback))
 
 module.exports = router;

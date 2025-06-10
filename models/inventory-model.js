@@ -25,6 +25,64 @@ async function getInventoryByClassificationId(classification_id) {
   }
 }
 
+async function getMarketplaceByClassificationId(classification_id) {
+  try {
+    // 1. Get inventory items by classification
+    const inventoryData = await pool.query(
+      `SELECT * FROM public.inventory AS i 
+       JOIN public.classification AS c 
+       ON i.classification_id = c.classification_id
+       WHERE i.classification_id = $1`,
+      [classification_id]
+    );
+
+    // 2. Get post data for all those inventory items
+    const postData = await pool.query(
+      `SELECT * FROM public.posts 
+       WHERE inv_id IN (
+         SELECT inv_id FROM public.inventory WHERE classification_id = $1
+       )`,
+      [classification_id]
+    );
+
+    // 3. Group posts by inv_id (determine liked state and collect comments)
+    const postsByInvId = {};
+    for (const post of postData.rows) {
+      if (!postsByInvId[post.inv_id]) {
+        postsByInvId[post.inv_id] = {
+          liked: false,
+          comments: []
+        };
+      }
+
+      // If *any* post has liked = true, consider the item liked
+      if (post.liked) {
+        postsByInvId[post.inv_id].liked = true;
+      }
+
+      if (post.comment) {
+        postsByInvId[post.inv_id].comments.push(post.comment);
+      }
+    }
+
+    // 4. Combine data
+    const fullData = inventoryData.rows.map(item => {
+      const postInfo = postsByInvId[item.inv_id] || { liked: false, comments: [] };
+      return {
+        ...item,
+        liked: postInfo.liked,
+        comments: postInfo.comments
+      };
+    });
+
+    return fullData;
+
+  } catch (error) {
+    console.error("getMarketplaceByClassificationId error:", error);
+    throw error;
+  }
+}
+
 async function getInventoryById(inv_id) {
   try {
     const data = await pool.query(
@@ -113,4 +171,14 @@ async function deleteInventory(inv_id) {
   }
 }
 
-module.exports = {getClassifications, getInventoryByClassificationId, getInventoryById, addClassification, addInventory, updateInventory, deleteInventory}
+async function addPostFeedback(liked, comment, inv_id, classification_id) {
+  try {
+    const sql = 'INSERT INTO posts (liked, comment, inv_id, classification_id) VALUES ($1, $2, $3, $4) RETURNING *'
+    const data = await pool.query(sql, [liked, comment, inv_id, classification_id])
+    return data
+  } catch (error) {
+    console.error("Error adding post feedback to database: " + error)
+  }
+}
+
+module.exports = {getClassifications, getInventoryByClassificationId, getInventoryById, addClassification, addInventory, updateInventory, deleteInventory, addPostFeedback, getMarketplaceByClassificationId}
